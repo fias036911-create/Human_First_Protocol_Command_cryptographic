@@ -1,0 +1,2 @@
+# Human_First_Protocol_Command_cryptographic
+Irreversible_ENCODED
