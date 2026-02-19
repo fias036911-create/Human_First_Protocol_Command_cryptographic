@@ -106,5 +106,36 @@ cycle.
 - Build a web service or CLI to batch-process proofs
 - Add documentation on the Human First Protocol itself
 
+## 🔐 README Proof
+A timestamp for *this* README has been created and stored in the
+`proofs/README.md.ots` file.  It proves that the contents of the file existed
+on **February 19 2026** and cannot be altered retroactively.
+
+## 🧬 Protocol Helpers
+This repository now includes stub functions for the Human First Protocol.
+They're simple placeholders showing where real policy checks could live.
+
+**Package files:**
+
+- `human_first_protocol/protocol.py` – core protocol helpers
+- `tests/test_protocol.py` – unit tests demonstrating expected behavior
+
+Example usage:
+
+```python
+from human_first_protocol import protocol
+
+if protocol.check_human_sovereignty("alice"):
+    protocol.log_transparency("sign", "alice signed document")
+    assert protocol.requires_consent()
+```
+
+You can run the new tests with `pytest`:
+
+```bash
+python -m pytest tests/test_protocol.py -q
+```
+
+
 ---
 
