@@ -1,19 +1,26 @@
 """Tests for the Human First Protocol stub helpers."""
 
-from human_first_protocol import protocol
+from human_first_protocol import protocol, check_human_sovereignty
 
 
-def test_check_human_sovereignty():
-    assert protocol.check_human_sovereignty("alice")
-    assert not protocol.check_human_sovereignty("")
-    assert not protocol.check_human_sovereignty("   ")
+def test_check_human_sovereignty_function():
+    # old standalone functions still exist for backwards compatibility
+    # new implementation only returns true for subject == "human"
+    assert check_human_sovereignty("human")
+    assert not check_human_sovereignty("alice")
+    assert not check_human_sovereignty("")
 
 
-def test_log_transparency(capfd):
-    protocol.log_transparency("action", "details")
+def test_protocol_class_behavior(capfd):
+    p = protocol.HumanFirstProtocol()
+    assert p.check_human_sovereignty("human")
+    assert not p.check_human_sovereignty("robot")
+
+    # logging should append and print
+    p.log_transparency("act", {"foo": "bar"})
     captured = capfd.readouterr()
-    assert "[TRANSPARENCY] action: details" in captured.out
+    assert "[TRANSPARENCY] act: {'foo': 'bar'}" in captured.out
+    assert len(p.transparency_log) == 1
 
-
-def test_requires_consent():
-    assert protocol.requires_consent() is True
+    assert p.requires_consent("alice", "terminate")
+    assert not p.requires_consent("alice", "read")
