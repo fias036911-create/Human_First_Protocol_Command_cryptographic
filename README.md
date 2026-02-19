@@ -27,3 +27,84 @@ Verify: `ots verify proofs/FIASANOVA_QUANTUM_SIGNATURE_PNG_ENCODED.pdf.ots`
 
 ---
 
+## 🛠️ Reference Implementation Framework
+
+This repository now includes a minimal Python-based framework that demonstrates
+how the **Human First Protocol** might manage cryptographic timestamping and
+proof verification. It is intended as a starting point for community
+contributions and further experimentation.
+
+### 📁 Project Layout
+
+```
+/ (root)
+├── cli.py                 # simple command‑line interface
+├── human_first_protocol/  # Python package
+│   ├── __init__.py
+│   └── timestamp.py       # timestamping helpers
+├── proofs/                # OpenTimestamps receipts
+├── tests/                 # unit tests
+├── README.md
+├── requirements.txt
+└── pyproject.toml         # build metadata
+```
+
+### 🚀 Getting started
+
+1. **Install dependencies** (inside a virtualenv):
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+2. **Install the OpenTimestamps CLI** (required by the helpers):
+   ```bash
+   pip install opentimestamps-client
+   ```
+3. **(optional)** make the package importable for development:
+   ```bash
+   pip install -e .
+   ```
+
+### 🔧 Usage examples
+
+Create a timestamp for a file:
+
+```bash
+python cli.py timestamp some-document.pdf
+```
+
+Verify a receipt:
+
+```bash
+python cli.py verify proofs/some-document.pdf.ots
+```
+
+You can also import the helpers directly from Python:
+
+```python
+from human_first_protocol import timestamp
+
+receipt = timestamp.timestamp_file("foo.txt")
+assert timestamp.verify_receipt(receipt)
+```
+
+### ✅ Running tests
+
+```bash
+pip install pytest
+pytest
+```
+
+The repository contains a basic suite that verifies error conditions and,
+if ``ots`` is installed on your system, performs an end-to-end timestamp/verify
+cycle.
+
+### 📈 Next steps
+
+- Expand the cryptographic primitives (e.g. add signing, hashing, etc.)
+- Build a web service or CLI to batch-process proofs
+- Add documentation on the Human First Protocol itself
+
+---
+

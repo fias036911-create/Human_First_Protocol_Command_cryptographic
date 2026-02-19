@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "human-first-protocol"
+version = "0.1.0"
+description = "Reference implementation of the Human First Protocol cryptographic utilities."
+authors = [ { name = "fias036911-create" } ]
+readme = "README.md"
+license = { file = "LICENSE" }
+
+[tool.setuptools.packages.find]
+where = ["."]
