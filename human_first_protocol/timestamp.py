@@ -29,7 +29,8 @@ def timestamp_file(path: Path) -> Path:
         raise FileNotFoundError(f"{path} does not exist or is not a file")
 
     receipt = path.with_suffix(path.suffix + ".ots")
-    result = subprocess.run(["ots", "timestamp", str(path)], capture_output=True, text=True)
+    # the CLI subcommand is called "stamp" in current ots versions
+    result = subprocess.run(["ots", "stamp", str(path)], capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(
             f"timestamping failed: {result.stderr.strip() or result.stdout.strip()}"
@@ -49,5 +50,10 @@ def verify_receipt(receipt: Path) -> bool:
     if not receipt.is_file():
         raise FileNotFoundError(f"{receipt} does not exist or is not a file")
 
+    result = subprocess.run(["ots", "verify", str(receipt)], capture_output=True, text=True)
+    if result.returncode == 0:
+        return True
+    # try upgrading the receipt and verify again; some environments need this
+    subprocess.run(["ots", "upgrade", str(receipt)], capture_output=True, text=True)
     result = subprocess.run(["ots", "verify", str(receipt)], capture_output=True, text=True)
     return result.returncode == 0
